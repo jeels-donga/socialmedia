@@ -21,10 +21,8 @@ export default function RootLayout({ children }) {
         <body className={`${inter.className} bg-purple-2 text-light-1`}>
           <main className="flex flex-row">
             <LeftSideBar />
-            <MainContainer>
-              {children}
-            </MainContainer>
-            <RightSideBar />
+            <MainContainer>{children}</MainContainer>
+            {/* <RightSideBar /> */}
           </main>
           <BottomBar />
         </body>

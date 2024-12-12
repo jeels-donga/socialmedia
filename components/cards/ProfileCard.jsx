@@ -8,9 +8,7 @@ import Link from "next/link";
 
 const ProfileCard = ({ userData, activeTab }) => {
   const { user, isLoaded } = useUser();
-
   const [loading, setLoading] = useState(true);
-
   const [userInfo, setUserInfo] = useState({});
 
   const getUser = async () => {
@@ -52,36 +50,31 @@ const ProfileCard = ({ userData, activeTab }) => {
   return loading || !isLoaded ? (
     <Loader />
   ) : (
-    <div className="flex flex-col gap-9">
-      <div className="flex justify-between items-start">
-        <div className="flex gap-5 items-start">
+    <div className="flex flex-col gap-6 p-6 bg-gradient-to-r from-purple-700 to-purple-900 rounded-lg shadow-lg text-white">
+      <div className="flex justify-between items-center">
+        <div className="flex gap-4 items-start">
           <Image
             src={userData.profilePhoto}
             alt="profile photo"
             width={100}
             height={100}
-            className="rounded-full md:max-lg:hidden"
+            className="rounded-full border-4 border-purple-300 shadow-md"
           />
-
-          <div className="flex flex-col gap-3">
-            <p className="text-light-1 text-heading3-bold max-sm:text-heading4-bold">
-              {userData.firstName} {userData.lastName}
-            </p>
-            <p className="text-light-3 text-subtle-semibold">
-              {userData.username}
-            </p>
-            <div className="flex gap-7 text-small-bold max-sm:gap-4">
-              <div className="flex max-sm:flex-col gap-2 items-center max-sm:gap-0.5">
-                <p className="text-purple-1">{userData.posts.length}</p>
-                <p className="text-light-1">Posts</p>
+          <div className="flex flex-col">
+            <p className="text-2xl font-bold">{`${userData.firstName} ${userData.lastName}`}</p>
+            <p className="text-sm text-purple-200">@{userData.username}</p>
+            <div className="flex gap-4 mt-2">
+              <div className="flex flex-col items-center">
+                <p className="text-xl font-semibold text-purple-200">{userData.posts.length}</p>
+                <p className="text-sm">Posts</p>
               </div>
-              <div className="flex max-sm:flex-col gap-2 items-center max-sm:gap-0.5">
-                <p className="text-purple-1">{userData.followers.length}</p>
-                <p className="text-light-1">Followers</p>
+              <div className="flex flex-col items-center">
+                <p className="text-xl font-semibold text-purple-200">{userData.followers.length}</p>
+                <p className="text-sm">Followers</p>
               </div>
-              <div className="flex max-sm:flex-col gap-2 items-center max-sm:gap-0.5">
-                <p className="text-purple-1">{userData.following.length}</p>
-                <p className="text-light-1">Following</p>
+              <div className="flex flex-col items-center">
+                <p className="text-xl font-semibold text-purple-200">{userData.following.length}</p>
+                <p className="text-sm">Following</p>
               </div>
             </div>
           </div>
@@ -90,23 +83,25 @@ const ProfileCard = ({ userData, activeTab }) => {
         {user.id !== userData.clerkId &&
           (isFollowing ? (
             <PersonRemove
-              sx={{ color: "#7857FF", cursor: "pointer", fontSize: "40px" }}
-              onClick={() => handleFollow()}
+              className="text-purple-400 hover:text-purple-100 cursor-pointer text-4xl transition-transform transform hover:scale-110"
+              onClick={handleFollow}
             />
           ) : (
             <PersonAddAlt
-              sx={{ color: "#7857FF", cursor: "pointer", fontSize: "40px" }}
-              onClick={() => handleFollow()}
+              className="text-purple-400 hover:text-purple-100 cursor-pointer text-4xl transition-transform transform hover:scale-110"
+              onClick={handleFollow}
             />
           ))}
       </div>
 
-      <div className="flex gap-6">
+      <div className="flex gap-4 mt-4">
         {tabs.map((tab) => (
           <Link
-            className={`tab ${
-              activeTab === tab.name ? "bg-purple-1" : "bg-dark-2"
-            }`}
+            key={tab.name}
+            className={`px-4 py-2 rounded-lg transition-all ${activeTab === tab.name
+              ? "bg-purple-600 text-white shadow-md"
+              : "bg-purple-800 text-purple-300 hover:bg-purple-700 hover:text-white"
+              }`}
             href={`/profile/${userData._id}/${tab.link}`}
           >
             {tab.name}

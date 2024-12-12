@@ -37,24 +37,23 @@ const Posting = ({ post, apiEndpoint }) => {
       });
 
       if (response.ok) {
-        router.push(`/profile/${data.creatorId}/posts`)
+        router.push(`/profile/${data.creatorId}/posts`);
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
   return (
     <form
-      className="flex flex-col gap-7 pb-24"
+      className="flex flex-col gap-6 bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-xl shadow-lg max-w-md mx-auto"
       onSubmit={handleSubmit(handlePublish)}
     >
       <label
         htmlFor="photo"
-        className="flex gap-4 items-center text-light-1 cursor-pointer"
+        className="flex flex-col items-center gap-3 text-light-1 cursor-pointer hover:scale-105 transition-transform"
       >
         {watch("postPhoto") ? (
-          // Check profile photo is a string or a file
           typeof watch("postPhoto") === "string" ? (
             <Image
               src={watch("postPhoto")}
@@ -73,11 +72,11 @@ const Posting = ({ post, apiEndpoint }) => {
             />
           )
         ) : (
-          <AddPhotoAlternateOutlined
-            sx={{ fontSize: "100px", color: "white" }}
-          />
+          <div className="flex flex-col items-center">
+            <AddPhotoAlternateOutlined sx={{ fontSize: "100px", color: "white" }} />
+            <p className="text-sm text-gray-400">Upload a photo</p>
+          </div>
         )}
-        <p>Upload a photo</p>
       </label>
       <input
         {...register("postPhoto", {
@@ -85,7 +84,7 @@ const Posting = ({ post, apiEndpoint }) => {
             if (
               typeof value === "null" ||
               (Array.isArray(value) && value.length === 0) ||
-              value === "underfined"
+              value === "undefined"
             ) {
               return "A photo is required!";
             }
@@ -97,11 +96,14 @@ const Posting = ({ post, apiEndpoint }) => {
         style={{ display: "none" }}
       />
       {errors.postPhoto && (
-        <p className="text-red-500">{errors.postPhoto.message}</p>
+        <p className="text-sm text-red-500">{errors.postPhoto.message}</p>
       )}
 
       <div>
-        <label htmlFor="caption" className="text-light-1">
+        <label
+          htmlFor="caption"
+          className="block mb-2 text-light-1 text-sm font-semibold"
+        >
           Caption
         </label>
         <textarea
@@ -116,32 +118,33 @@ const Posting = ({ post, apiEndpoint }) => {
           type="text"
           rows={3}
           placeholder="What's on your mind?"
-          className="w-full input"
+          className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-pink-500 outline-none text-light-1"
           id="caption"
         />
-
         {errors.caption && (
-          <p className="text-red-500">{errors.caption.message}</p>
+          <p className="text-sm text-red-500">{errors.caption.message}</p>
         )}
       </div>
 
       <div>
-        <label htmlFor="tag" className="text-light-1">
+        <label
+          htmlFor="tag"
+          className="block mb-2 text-light-1 text-sm font-semibold"
+        >
           Tag
         </label>
         <input
           {...register("tag", { required: "Tag is required" })}
           type="text"
           placeholder="#tag"
-          className="w-full input"
+          className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-pink-500 outline-none text-light-1"
         />
-
-        {errors.tag && <p className="text-red-500">{errors.tag.message}</p>}
+        {errors.tag && <p className="text-sm text-red-500">{errors.tag.message}</p>}
       </div>
 
       <button
         type="submit"
-        className="py-2.5 rounded-lg mt-10 bg-purple-1 hover:bg-pink-1 text-light-1"
+        className="py-3 rounded-lg mt-5 bg-pink-500 hover:bg-pink-600 transition-colors text-light-1 text-sm font-semibold shadow-md hover:shadow-lg"
       >
         Publish
       </button>

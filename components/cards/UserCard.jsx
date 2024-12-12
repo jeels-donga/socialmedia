@@ -9,9 +9,7 @@ import React, { useEffect, useState } from "react";
 
 const UserCard = ({ userData, update }) => {
   const { user, isLoaded } = useUser();
-
   const [loading, setLoading] = useState(true);
-
   const [userInfo, setUserInfo] = useState({});
 
   const getUser = async () => {
@@ -54,38 +52,43 @@ const UserCard = ({ userData, update }) => {
   return loading || !isLoaded ? (
     <Loader />
   ) : (
-    <div className="flex justify-between items-center">
-      <Link className="flex gap-4 items-center" href={`/profile/${userData._id}/posts`}>
+    <div className="flex items-center justify-between p-4 bg-white shadow-md rounded-lg hover:shadow-lg transition-shadow">
+      <Link
+        className="flex gap-4 items-center hover:no-underline"
+        href={`/profile/${userData._id}/posts`}
+      >
         <Image
           src={userData.profilePhoto}
           alt="profile photo"
           width={50}
           height={50}
-          className="rounded-full"
+          className="rounded-full border border-gray-300"
         />
-        <div className="flex flex-col gap-1">
-          <p className="text-small-semibold text-light-1">
+        <div className="flex flex-col">
+          <p className="text-base font-semibold text-gray-800">
             {userData.firstName} {userData.lastName}
           </p>
-          <p className="text-subtle-medium text-light-3">
-            @{userData.username}
-          </p>
+          <p className="text-sm text-gray-500">@{userData.username}</p>
         </div>
       </Link>
 
       {user.id !== userData.clerkId &&
         (isFollowing ? (
-          <PersonRemove
-            sx={{ color: "#7857FF", cursor: "pointer" }}
+          <button
+            className="flex items-center gap-2 bg-purple-50 text-purple-600 hover:bg-purple-100 px-4 py-2 rounded-md transition-colors"
             onClick={() => handleFollow()}
-          />
+          >
+            <PersonRemove className="w-5 h-5" />
+            <span className="text-sm font-medium">Unfollow</span>
+          </button>
         ) : (
-          <PersonAddAlt
-            sx={{ color: "#7857FF", cursor: "pointer" }}
-            onClick={() => {
-              handleFollow();
-            }}
-          />
+          <button
+            className="flex items-center gap-2 bg-purple-600 text-white hover:bg-purple-700 px-4 py-2 rounded-md transition-colors"
+            onClick={() => handleFollow()}
+          >
+            <PersonAddAlt className="w-5 h-5" />
+            <span className="text-sm font-medium">Follow</span>
+          </button>
         ))}
     </div>
   );

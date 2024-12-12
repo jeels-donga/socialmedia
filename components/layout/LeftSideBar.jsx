@@ -10,9 +10,7 @@ import Loader from "@components/Loader";
 
 const LeftSideBar = () => {
   const { user, isLoaded } = useUser();
-
   const [loading, setLoading] = useState(true);
-
   const [userData, setUserData] = useState({});
 
   const getUser = async () => {
@@ -31,51 +29,66 @@ const LeftSideBar = () => {
   return loading || !isLoaded ? (
     <Loader />
   ) : (
-    <div className="h-screen left-0 top-0 sticky overflow-auto px-10 py-6 flex flex-col gap-6 max-md:hidden 2xl:w-[350px] pr-20 custom-scrollbar">
-      <Link href="/">
-        <Image src="/assets/logo.png" alt="logo" width={200} height={200} />
+    <div className="h-screen sticky top-0 overflow-auto px-8 py-6 bg-gradient-to-b from-gray-800 via-gray-900 to-black text-white shadow-xl flex flex-col gap-8 max-md:hidden 2xl:w-[350px] pr-16 custom-scrollbar">
+      {/* Logo */}
+      <Link href="/" className="flex justify-center">
+        <Image
+          src="/assets/logo.png"
+          alt="logo"
+          width={180}
+          height={180}
+          className="hover:scale-105 transition-transform duration-300"
+        />
       </Link>
 
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-col gap-2 items-center text-light-1">
-          <Link href={`/profile/${userData?._id}/posts`}>
-            <Image
-              src={userData?.profilePhoto}
-              alt="profile photo"
-              width={50}
-              height={50}
-              className="rounded-full"
-            />
-          </Link>
-          <p className="text-small-bold">
-            {userData?.firstName} {userData?.lastName}
-          </p>
-        </div>
-        <div className="flex text-light-1 justify-between">
+      {/* User Info */}
+      <div className="flex flex-col items-center gap-4">
+        <Link
+          href={`/profile/${userData?._id}/posts`}
+          className="hover:scale-105 transition-transform duration-300"
+        >
+          <Image
+            src={userData?.profilePhoto}
+            alt="profile photo"
+            width={60}
+            height={60}
+            className="rounded-full border-4 border-gray-700"
+          />
+        </Link>
+        <p className="text-lg font-semibold">{`${userData?.firstName || ""} ${userData?.lastName || ""
+          }`}</p>
+        <div className="flex justify-between w-full text-center text-gray-300 mt-2 gap-5">
           <div className="flex flex-col items-center">
-            <p className="text-base-bold">{userData?.posts?.length}</p>
-            <p className="text-tiny-medium">Posts</p>
+            <p className="text-xl font-bold">{userData?.posts?.length || 0}</p>
+            <p className="text-sm">Posts</p>
           </div>
           <div className="flex flex-col items-center">
-            <p className="text-base-bold">{userData?.followers?.length}</p>
-            <p className="text-tiny-medium">Followers</p>
+            <p className="text-xl font-bold">{userData?.followers?.length || 0}</p>
+            <p className="text-sm">Followers</p>
           </div>
           <div className="flex flex-col items-center">
-            <p className="text-base-bold">{userData?.following?.length}</p>
-            <p className="text-tiny-medium">Following</p>
+            <p className="text-xl font-bold">{userData?.following?.length || 0}</p>
+            <p className="text-sm">Following</p>
           </div>
         </div>
       </div>
 
-      <hr />
+      <hr className="border-gray-600" />
 
+      {/* Menu */}
       <Menu />
 
-      <hr />
+      <hr className="border-gray-600" />
 
-      <div className="flex gap-4 items-center">
-        <UserButton appearance={{ baseTheme: dark }} afterSignOutUrl="/sign-in" />
-        <p className="text-light-1 text-body-bold">Manage Account</p>
+      {/* Manage Account */}
+      <div className="flex items-center gap-4">
+        <UserButton
+          appearance={{ baseTheme: dark }}
+          afterSignOutUrl="/sign-in"
+        />
+        <p className="text-lg font-medium hover:text-gray-300 cursor-pointer">
+          Manage Account
+        </p>
       </div>
     </div>
   );
